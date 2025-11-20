@@ -25,8 +25,15 @@ public class Mole implements Runnable {
 	@Override
 	public void run() {
 		
-		
+		try {
+			
+			
+			
+		} catch(InterruptedException e) {
+			System.out.println("ERROR: Mole was interrupted!");
+		}
 		
 	}
 
 }
+
