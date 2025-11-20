@@ -17,32 +17,32 @@ public class CountDownTimer implements Runnable {
 	}
 	
 	@Override
-	public void run() {
-		int timeRemaining = durationSeconds;
-		
-		try {
-			while(timeRemaining >= 0 && !game.getGameOver()) {
-				
-				Platform.runLater(() -> {
-					mainView.displayTimeRemaining(String.valueOf(timeRemaining));
-				});
-				
-				Thread.sleep(1000);
-				
-				timeRemaining--;
-				
-			}
-			
-			if (!game.getGameOver()) {
-                game.endGame();
+	public synchronized void run() {
+	    int timeRemaining = durationSeconds;
 
-                Platform.runLater(() -> {
-                    mainView.displayTimeRemaining("0");
-                });
-            }
-		} catch(InterruptedException e) {
-			System.out.print("ERROR: Timer was interrupted.");
-		}
+	    try {
+	        while (timeRemaining >= 0 && !game.getGameIsOver()) {
+	            
+	            final int currentCount = timeRemaining;
+	            
+	            Platform.runLater(() -> {
+	                mainView.displayTimeRemaining(String.valueOf(currentCount));
+	            });
+
+	            Thread.sleep(1000);
+
+	            timeRemaining--;
+	        }
+
+	        if (!game.getGameIsOver()) {
+	            game.endGame();
+
+	            Platform.runLater(() -> {
+	                mainView.displayTimeRemaining("0");
+	            });
+	        }
+
+	    } catch (InterruptedException e) {
+	        System.out.println("ERROR: Timer was interrupted.");
+	    }
 	}
-	
-}
