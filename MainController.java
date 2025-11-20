@@ -1,6 +1,7 @@
 package application.controller;
 
 import application.model.Mole;
+import application.view.MainView;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
@@ -26,29 +27,44 @@ public class MainController {
 	@FXML private Label scoreLabel;
 	@FXML private Button startButton;
 	@FXML private Label timeRemainingLabel;
-	
+	int score;
+	MainView mainview;
+	Mole mole;
 	public void initialize(Image moleImage) {
-		Mole mole = new Mole();
+		mainview = new MainView();
+		mole = new Mole();
+		mole.mainview = this.mainview;
 		mole.moleImage = moleImage;
-		imageView0.setImage(moleImage);
-		imageView1.setImage(moleImage);
-		imageView2.setImage(moleImage);
-		imageView3.setImage(moleImage);
-		imageView4.setImage(moleImage);
-		
-		
+		mainview.setMoleImage(moleImage);
+		mainview.setImageView0(imageView0);
+		mainview.setImageView1(imageView1);
+		mainview.setImageView2(imageView2);
+		mainview.setImageView3(imageView3);
+		mainview.setImageView4(imageView4);
+//		imageView0.setImage(moleImage);
+//		imageView1.setImage(moleImage);
+//		imageView2.setImage(moleImage);
+//		imageView3.setImage(moleImage);
+//		imageView4.setImage(moleImage);
+		score = 0;
 	}
 
     @FXML
     void imageViewAction(MouseEvent event) {
     	ImageView imageView;
+    	
     	imageView = (ImageView) event.getTarget();
-    	imageView.setImage(null);
+    	if(imageView.getImage() != null) {
+    		score ++;
+    		System.out.println("SCORE: " + score);
+    		imageView.setImage(null);
+    	}
+    	mainview.setLabel(scoreLabel, "" + score);
     }
 
     @FXML
     void startButtonAction(ActionEvent event) {
-
+    	start(mole.run());
     }
 
 }

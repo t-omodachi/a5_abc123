@@ -1,39 +1,34 @@
 package application.model;
-import javafx.scene.image.Image;
+
 import java.util.Random;
 
+import application.view.MainView;
+import javafx.scene.image.Image;
+
 public class Mole implements Runnable {
+	int index;
+	Random rand = new Random();
+	public MainView mainview;
+	WhackAMole game;
+	public Image moleImage;
 	
-	private WhackAMole game;
-	private MainView mainView;
-	private Image moleImage;
-	private int index;
-	private boolean gameIsOver;
-	private Random rand;
-	
-	public mole(WhackAMole game, MainView mainView, Image moleImage, int index, boolean gameIsOver) {
-		
-		this.game = game;
-		this.mainView = mainView;
-		this.moleImage = moleImage;
-		this.index = index;
-		this.gameIsOver = gameIsOver;
-		this.rand = new Random();
-		
-	}
-	
-	@Override
 	public void run() {
-		
-		try {
-			
-			
-			
-		} catch(InterruptedException e) {
-			System.out.println("ERROR: Mole was interrupted!");
+		for(int i = 5; i > 0; i--) {
+			try{
+				Thread.sleep(1000);
+				
+				int moleIndex = rand.nextInt(0,4);
+				System.out.println("MOLE! at index, " + moleIndex);
+				mainview.displayMole(moleIndex);
+				
+			}
+	
+			catch(InterruptedException e) {
+				System.err.println(e);
+				
+				Thread.currentThread().interrupt();
+				return;
+			}
 		}
-		
 	}
-
-}
-
+	}
