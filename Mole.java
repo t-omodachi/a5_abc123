@@ -10,17 +10,42 @@ public class Mole implements Runnable {
 	Random rand = new Random();
 	public MainView mainview;
 	WhackAMole game;
+	CountDownTimer countdown;
+	boolean peeking;
+	int peekTime;
+	double startPeekTime;
+	double stopPeekTime;
+	int moleStart = (int) System.currentTimeMillis();
 	public Image moleImage;
 	
-	public void run() {
-		for(int i = 5; i > 0; i--) {
-			try{
-				Thread.sleep(1000);
+	public synchronized void run() {
+			try{	
 				
-				int moleIndex = rand.nextInt(0,4);
-				System.out.println("MOLE! at index, " + moleIndex);
-				mainview.displayMole(moleIndex);
+				System.out.println("Mole Started");	
+
 				
+				while(game.gameisOver == false) {
+					
+					peeking = true;
+					int timeToAppear = rand.nextInt(2000,5000);
+					Thread.sleep(timeToAppear);	
+					startPeekTime = System.currentTimeMillis();
+					mainview.displayMole(index);
+					
+					int timeToHide = rand.nextInt(1000,2000);
+					Thread.sleep(timeToHide);
+					
+					if(peeking){ //if the mole is clicked he'll hide so we don't need to execute the code below
+						peeking = false;
+						mainview.hideMole(index);
+						endClock(); // unsure if this is required, used for testing and checking if score calculation is correct
+						game.gameOver(); // we call this to update the gameIsOver Boolean
+					}
+
+				}
+				
+				System.out.print("GameOver no more moles");
+				game.endGame();
 			}
 	
 			catch(InterruptedException e) {
@@ -30,5 +55,25 @@ public class Mole implements Runnable {
 				return;
 			}
 		}
+	public boolean isPeeking() {
+		return peeking;
+	}
+	public int endClock() {
+		stopPeekTime = System.currentTimeMillis();
+		peekTime = (int)(stopPeekTime - startPeekTime);
+		//System.out.println(peekTime);
+		return peekTime;
+	}
+	public void setGame(WhackAMole game) {
+		this.game = game;
+	}
+	public void setIndex(int n) {
+		index = n;
+	}
+	public void setMainView(MainView mainview) {
+		this.mainview = mainview;
+	}
+	public void setCountDown(CountDownTimer count) {
+		countdown = count;
 	}
 	}

@@ -13,6 +13,7 @@ public class MainView {
 	ImageView imageView2;
 	ImageView imageView3;
 	ImageView imageView4;
+	Label timeLabel;
 	public void setImageView0(ImageView imageView) {
 		imageView0 = imageView;
 	}
@@ -41,7 +42,11 @@ public class MainView {
 		imageView = getImageView(moleIndex);
 		imageView.setImage(moleImage);
 	}
-	
+	public void hideMole(int moleIndex) {
+		ImageView imageView;
+		imageView = getImageView(moleIndex);
+		imageView.setImage(null);
+	}
 	private ImageView getImageView(int n) {
 		switch(n) {
 		case 0:
@@ -58,6 +63,13 @@ public class MainView {
 			return null;
 		}
 		
+	}
+	public void displayTimeRemaining(String time) {
+		timeLabel.setText(time);
+	}
+	public void setTimeLabel(Label timeRemainingLabel) {
+		// TODO Auto-generated method stub
+		timeLabel = timeRemainingLabel;
 	}
 	
 }
